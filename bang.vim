@@ -18,7 +18,6 @@ function! s:OnEvent(job_id, data, event)
 endfunction
 
 function! s:Cleanup(job_id)
-  silent execute ":b#|bw! #"
   call remove(s:buffer, a:job_id)
   if get(jobwait([a:job_id], 0), 0) == -1
     call jobstop(a:job_id)
