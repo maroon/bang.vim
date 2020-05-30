@@ -31,12 +31,12 @@ function Bang(command)
   \ 'on_stderr': function('s:OnEvent'),
   \ 'on_exit': function('s:OnEvent')
   \ }
-  let s:anjob = jobstart(a:command, s:callbacks)
-  let s:local_buffer = bufnr("Bang-Job-" . s:anjob, 1)
-  let s:buffer[s:anjob] = s:local_buffer
+  let s:job_id = jobstart(a:command, s:callbacks)
+  let s:local_buffer = bufnr("Bang-Job-" . s:job_id, 1)
+  let s:buffer[s:job_id] = s:local_buffer
   call setbufvar(s:local_buffer, "&buftype", "nofile")
   silent execute s:local_buffer . "buffer"
-  silent execute 'nnoremap <buffer><silent> <CR> :call <SID>Cleanup(' . s:anjob . ')<CR>'
+  silent execute 'nnoremap <buffer><silent> <CR> :call <SID>Cleanup(' . s:job_id . ')<CR>'
 endfunction
 
 command! -nargs=* Bang call Bang('<args>')
