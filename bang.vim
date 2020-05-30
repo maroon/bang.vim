@@ -15,9 +15,7 @@ function! s:OnEvent(job_id, data, event)
   else
     return
   endif
-  if bufexists(s:current)
-    silent execute s:current . "buffer +"
-  endif
+  silent execute s:current . "buffer +"
 endfunction
 
 function! s:Cleanup(job_id)
