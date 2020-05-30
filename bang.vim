@@ -33,8 +33,8 @@ function Bang(command)
   let s:job_id = jobstart(a:command, s:callbacks)
   let s:local_buffer = bufnr("Bang-Job-" . s:job_id, 1)
   let s:buffer[s:job_id] = s:local_buffer
-  call setbufvar(s:local_buffer, "&buftype", "nofile")
   silent execute s:local_buffer . "buffer"
+  silent execute 'setlocal buftype=nofile bufhidden=wipe'
   silent execute 'nnoremap <buffer><silent> <CR> :b#\|bw! #<CR>'
   silent execute 'au BufDelete <buffer='.s:local_buffer.'> call <SID>Cleanup('.s:job_id.')'
 endfunction
