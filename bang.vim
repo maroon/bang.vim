@@ -14,8 +14,8 @@ function! s:OnEvent(job_id, data, event)
 endfunction
 
 function! s:Cleanup(job_id)
-  execute ":b#|bw! #"
-  execute jobstop(a:job_id)
+  silent execute ":b#|bw! #"
+  silent execute jobstop(a:job_id)
   call remove(s:buffer, a:job_id)
 endfunction
 
@@ -29,8 +29,8 @@ function Bang(command)
   let s:local_buffer = bufnr("Bang-Job-" . s:anjob, 1)
   let s:buffer[s:anjob] = s:local_buffer
   call setbufvar(s:local_buffer, "&buftype", "nofile")
-  execute s:local_buffer . "buffer"
-  execute 'nnoremap <buffer><silent> <CR> :call <SID>Cleanup(' . s:anjob . ')<CR>'
+  silent execute s:local_buffer . "buffer"
+  silent execute 'nnoremap <buffer><silent> <CR> :call <SID>Cleanup(' . s:anjob . ')<CR>'
 endfunction
 
 command! -nargs=* Bang call Bang('<args>')
