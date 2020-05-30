@@ -17,7 +17,9 @@ endfunction
 
 function! s:Cleanup(job_id)
   silent execute ":b#|bw! #"
-  silent execute jobstop(a:job_id)
+  if get(s:buffer, a:job_id)
+    silent call jobstop(a:job_id)
+  endif
 endfunction
 
 function Bang(command)
