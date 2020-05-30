@@ -35,7 +35,7 @@ function Bang(command)
   let s:buffer[s:job_id] = s:local_buffer
   silent execute s:local_buffer . "buffer"
   silent execute 'setlocal buftype=nofile bufhidden=wipe'
-  silent execute 'nnoremap <buffer><silent> <CR> :b#\|bw! #<CR>'
+  silent execute 'nnoremap <buffer><silent> <CR> :b#<CR>'
   silent execute 'au BufDelete <buffer='.s:local_buffer.'> call <SID>Cleanup('.s:job_id.')'
 endfunction
 
