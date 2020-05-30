@@ -11,7 +11,6 @@ function! s:OnEvent(job_id, data, event)
     call setbufline(s:current, line("w$"), a:data)
   elseif a:event == 'exit'
     call appendbufline(s:current, line('$'), '>> Press return to close the buffer <<')
-    call remove(s:buffer, a:job_id)
   else
     return
   endif
@@ -20,6 +19,7 @@ endfunction
 
 function! s:Cleanup(job_id)
   silent execute ":b#|bw! #"
+  call remove(s:buffer, a:job_id)
   if get(s:buffer, a:job_id)
     silent call jobstop(a:job_id)
   endif
