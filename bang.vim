@@ -12,7 +12,9 @@ function! s:OnEvent(job_id, data, event)
   else
     return
   endif
-  execute 'normal G'
+  if bufexists(s:current)
+    silent execute s:current . "buffer +"
+  endif
 endfunction
 
 function! s:Cleanup(job_id)
