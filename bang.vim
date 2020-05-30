@@ -36,7 +36,7 @@ function Bang(command)
   silent execute s:local_buffer . "buffer"
   silent execute 'setlocal buftype=nofile bufhidden=wipe'
   silent execute 'nnoremap <buffer><silent> <CR> :b#<CR>'
-  silent execute 'au BufDelete <buffer='.s:local_buffer.'> call <SID>Cleanup('.s:job_id.')'
+  silent execute 'au BufUnload <buffer> call <SID>Cleanup('.s:job_id.')'
 endfunction
 
 command! -nargs=* Bang call Bang('<args>')
