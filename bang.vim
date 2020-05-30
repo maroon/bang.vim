@@ -4,6 +4,9 @@ endif
 
 function! s:OnEvent(job_id, data, event)
   let s:current = get(s:buffer, a:job_id)
+  if empty(s:current) || !bufexists(s:current)
+    return
+  endif
   if a:event == 'stdout' || a:event == 'stderr'
     call setbufline(s:current, line("w$"), a:data)
   elseif a:event == 'exit'
