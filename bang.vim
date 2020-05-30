@@ -3,10 +3,11 @@ if !exists('s:buffer')
 endif
 
 function! s:OnEvent(job_id, data, event)
+  let s:current = get(s:buffer, a:job_id)
   if a:event == 'stdout' || a:event == 'stderr'
-    call setbufline(s:buffer[a:job_id], line("w$"), a:data)
+    call setbufline(s:current, line("w$"), a:data)
   elseif a:event == 'exit'
-    call appendbufline(s:buffer[a:job_id], line('$'), '>> Press return to close the buffer <<')
+    call appendbufline(s:current, line('$'), '>> Press return to close the buffer <<')
   else
     return
   endif
