@@ -1,6 +1,4 @@
-if !exists('s:buffer')
-  let s:buffer = {}
-endif
+let s:buffer = {}
 
 function! s:OnEvent(job_id, data, event)
   let s:current = get(s:buffer, a:job_id)
@@ -38,5 +36,3 @@ function Bang(command)
   silent execute 'nnoremap <buffer><silent> <CR> :b#<CR>'
   silent execute 'au BufUnload <buffer> call <SID>Cleanup('.s:job_id.')'
 endfunction
-
-command! -nargs=* Bang call Bang('<args>')
