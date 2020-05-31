@@ -19,6 +19,7 @@ function! s:Cleanup(job_id)
   call remove(s:buffer, a:job_id)
   if get(jobwait([a:job_id], 0), 0) == -1
     call jobstop(a:job_id)
+    echo "Job killed."
   endif
 endfunction
 
