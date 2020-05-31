@@ -23,7 +23,7 @@ function! s:Cleanup(job_id)
   endif
 endfunction
 
-function Bang(command)
+function bang#startjob(command)
   let s:callbacks = {
   \ 'on_stdout': function('s:OnEvent'),
   \ 'on_stderr': function('s:OnEvent'),

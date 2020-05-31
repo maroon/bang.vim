@@ -1,1 +1,1 @@
-command! -nargs=* Bang call Bang('<args>')
+command! -nargs=* Bang call bang#startjob('<args>')
