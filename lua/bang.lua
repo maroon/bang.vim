@@ -1,5 +1,6 @@
 local api = vim.api
 local loop = vim.loop
+local sync = vim.schedule_wrap
 
 local function cleanup_job(job_id)
   if api.jobwait({job_id}, 0)[1] == -1 then
@@ -18,13 +19,12 @@ local function start_job(command)
     cleanup_job(handle)
   end)
 
-  loop.read_start(stdout, function(err, data)
-    api.nvim_buf_set_lines(buffer, -1, -1, false, data)
-  end)
-  loop.read_start(stderr, function(err, data)
-    local message = ">> Press return to close the buffer"
-    api.nvim_buf_set_lines(buffer, -1, -1, false, message)
-  end)
+  loop.read_start(stdout, sync(function(err, data)
+    api.nvim_buf_set_lines(buffer, -1, -1, false, {data})
+  end))
+  loop.read_start(stderr, sync(function(err, data)
+    api.nvim_buf_set_lines(buffer, -1, -1, false, {data})
+  end))
 
   api.nvim_set_current_buf(buffer)
   api.nvim_set_keymap('no', '<buffer><silent>', '<CR>', ':b#<CR>')
