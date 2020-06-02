@@ -27,11 +27,13 @@ local function cleanup_job(job_id)
 end
 
 local function start_job(command)
-  local job_id = api.jobstart(command, {
-    on_stdout = on_job_event,
-    on_stderr = on_job_event,
-    on_exit = on_job_event,
-  })
+  local stdout = loop.new_pipe()
+  local stderr = loop.new_pipe()
+  local handle = loop.spawn(command, {
+    stdio = {nil, stdout, stderr}
+  }, function(code, signal)
+    cleanup_job(handle)
+  end)
   local buffer = api.nvim_create_buf(false, true)
   buffers[job_id] = buffer
   api.nvim_set_current_buf(buffer)
