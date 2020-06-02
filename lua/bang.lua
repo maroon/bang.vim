@@ -2,22 +2,6 @@ local api = vim.api
 local loop = vim.loop
 local buffers = {}
 
-local function on_job_event(job_id, data, event)
-  local buffer = buffers[job_id]
-  if buffer == nil or not api.nvim_buf_is_loaded(buffer) then
-    return
-  end
-
-  if event == 'stdout' or event == 'stderr' then
-    api.nvim_buf_set_lines(buffer, -1, -1, false, data)
-  elseif event == 'exit' then
-    local message = ">> Press return to close the buffer"
-    api.nvim_buf_set_lines(buffer, -1, -1, false, message)
-  else
-    return
-  end
-end
-
 local function cleanup_job(job_id)
   buffers[job_id] = nil
   if api.jobwait({job_id}, 0)[1] == -1 then
