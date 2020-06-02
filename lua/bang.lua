@@ -1,4 +1,5 @@
 local api = vim.api
+local loop = vim.loop
 local buffers = {}
 
 local function on_job_event(job_id, data, event)
