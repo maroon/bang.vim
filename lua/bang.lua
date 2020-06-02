@@ -9,14 +9,14 @@ local function cleanup_job(job_id)
 end
 
 local function start_job(command)
-  local stdout = loop.new_pipe()
-  local stderr = loop.new_pipe()
+  local buffer = api.nvim_create_buf(false, true)
+  local stdout = loop.new_pipe(false)
+  local stderr = loop.new_pipe(false)
   local handle = loop.spawn(command, {
     stdio = {nil, stdout, stderr}
   }, function(code, signal)
     cleanup_job(handle)
   end)
-  local buffer = api.nvim_create_buf(false, true)
 
   loop.read_start(stdout, function(err, data)
     api.nvim_buf_set_lines(buffer, -1, -1, false, data)
