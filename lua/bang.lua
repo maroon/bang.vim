@@ -27,7 +27,7 @@ local function start_job(command)
   end))
 
   api.nvim_set_current_buf(buffer)
-  api.nvim_set_keymap('no', '<buffer><silent>', '<CR>', ':b#<CR>')
+  api.nvim_set_keymap('n', '<buffer><silent> <CR>', ':b#<CR>', {})
   api.nvim_buf_attach(buffer, false, {
     on_detach=function(b)
       cleanup_job(job_id)
