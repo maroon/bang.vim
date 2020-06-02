@@ -1,9 +1,7 @@
 local api = vim.api
 local loop = vim.loop
-local buffers = {}
 
 local function cleanup_job(job_id)
-  buffers[job_id] = nil
   if api.jobwait({job_id}, 0)[1] == -1 then
     api.jobstop(job_id)
     api.print("Job killed.")
@@ -19,7 +17,6 @@ local function start_job(command)
     cleanup_job(handle)
   end)
   local buffer = api.nvim_create_buf(false, true)
-  buffers[job_id] = buffer
 
   loop.read_start(stdout, function(err, data)
     api.nvim_buf_set_lines(buffer, -1, -1, false, data)
