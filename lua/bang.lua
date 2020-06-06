@@ -14,6 +14,15 @@ local function drop(str, char)
   return replacement
 end
 
+local function parse(args)
+  local args = vim.split(args, ',', true)
+  local values = {}
+  for _, arg in ipairs(args) do
+    table.insert(values, drop(arg, '"'))
+  end
+  return values[1], {unpack(values, 2)}
+end
+
 local function start_job(command)
   local buffer = api.nvim_create_buf(false, true)
   local stdout = loop.new_pipe(false)
