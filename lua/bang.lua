@@ -9,6 +9,11 @@ local function cleanup_job(job_id)
   end
 end
 
+local function drop(str, char)
+  local replacement, _ = string.gsub(str, char, '')
+  return replacement
+end
+
 local function start_job(command)
   local buffer = api.nvim_create_buf(false, true)
   local stdout = loop.new_pipe(false)
