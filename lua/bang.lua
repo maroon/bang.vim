@@ -61,9 +61,11 @@ local function start_job(args)
   local handle, pid = loop.spawn(command, {
     args = arguments,
     stdio = {nil, stdout, stderr}
-  }, function(code, signal)
-    cleanup_job(handle)
-  end)
+  }, sync(function(code, signal)
+    local message = '>> Press return to close the buffer <<'
+    write(buffer, message)
+    cleanup_job(handle, pid, stdout, stderr)
+  end))
 
   loop.read_start(stdout, sync(function(err, data)
     api.nvim_buf_set_lines(buffer, -1, -1, false, {data})
