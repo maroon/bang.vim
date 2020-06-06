@@ -35,10 +35,6 @@ local function write(buffer, data)
   api.nvim_buf_set_option(buffer, 'modifiable', true)
   api.nvim_buf_set_lines(buffer, offset, offset, false, {value})
   api.nvim_buf_set_option(buffer, 'modifiable', false)
-  local active_buffer = api.nvim_win_get_buf(0)
-  api.nvim_win_set_buf(0, buffer)
-  api.nvim_win_set_cursor(0, {lines, 0})
-  api.nvim_win_set_buf(0, active_buffer)
 end
 
 local function cleanup_job(handle, pid, stdout, stderr)
