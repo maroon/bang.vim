@@ -58,7 +58,8 @@ local function start_job(args)
   local buffer = api.nvim_create_buf(false, true)
   local stdout = loop.new_pipe(false)
   local stderr = loop.new_pipe(false)
-  local handle = loop.spawn(command, {
+  local handle, pid = loop.spawn(command, {
+    args = arguments,
     stdio = {nil, stdout, stderr}
   }, function(code, signal)
     cleanup_job(handle)
