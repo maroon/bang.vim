@@ -24,6 +24,23 @@ local function parse(args)
   return values[1], {unpack(values, 2)}
 end
 
+local function write(buffer, data)
+  if data == nil or not api.nvim_buf_is_valid(buffer) then
+    return
+  end
+
+  local lines = api.nvim_buf_line_count(buffer)
+  local offset = lines - 1
+  local value = table.concat(vim.split(data, '\n'))
+  api.nvim_buf_set_option(buffer, 'modifiable', true)
+  api.nvim_buf_set_lines(buffer, offset, offset, false, {value})
+  api.nvim_buf_set_option(buffer, 'modifiable', false)
+  local active_buffer = api.nvim_win_get_buf(0)
+  api.nvim_win_set_buf(0, buffer)
+  api.nvim_win_set_cursor(0, {lines, 0})
+  api.nvim_win_set_buf(0, active_buffer)
+end
+
 local function start_job(command)
   local buffer = api.nvim_create_buf(false, true)
   local stdout = loop.new_pipe(false)
