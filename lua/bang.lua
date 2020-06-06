@@ -41,6 +41,18 @@ local function write(buffer, data)
   api.nvim_win_set_buf(0, active_buffer)
 end
 
+local function cleanup_job(handle, pid, stdout, stderr)
+  if handle and loop.is_active(handle) then
+    stdout:read_stop()
+    stdout:close()
+    stderr:read_stop()
+    stderr:close()
+    handle:close()
+    print('Job killed.')
+  end
+  loop.kill(pid)
+end
+
 local function start_job(command)
   local buffer = api.nvim_create_buf(false, true)
   local stdout = loop.new_pipe(false)
