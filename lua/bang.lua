@@ -75,8 +75,8 @@ local function start_job(args)
   api.nvim_buf_set_option(buffer, 'buftype', 'nofile')
   api.nvim_buf_set_option(buffer, 'bufhidden', 'wipe')
   api.nvim_buf_attach(buffer, false, {
-    on_detach=function(b)
-      cleanup_job(job_id)
+    on_detach=function(buffer)
+      cleanup_job(handle, pid, stdout, stderr)
     end
   })
 
