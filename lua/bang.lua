@@ -67,13 +67,6 @@ local function start_job(args)
     cleanup_job(handle, pid, stdout, stderr)
   end))
 
-  loop.read_start(stdout, sync(function(err, data)
-    api.nvim_buf_set_lines(buffer, -1, -1, false, {data})
-  end))
-  loop.read_start(stderr, sync(function(err, data)
-    api.nvim_buf_set_lines(buffer, -1, -1, false, {data})
-  end))
-
   api.nvim_set_current_buf(buffer)
   api.nvim_set_keymap('n', '<buffer><silent> <CR>', ':b#<CR>', {})
   api.nvim_buf_attach(buffer, false, {
@@ -81,6 +74,13 @@ local function start_job(args)
       cleanup_job(job_id)
     end
   })
+
+  loop.read_start(stdout, sync(function(err, data)
+    write(buffer, data)
+  end))
+  loop.read_start(stderr, sync(function(err, data)
+    write(buffer, data)
+  end))
 end
 
 return {
