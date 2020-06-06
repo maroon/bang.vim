@@ -2,11 +2,12 @@ local api = vim.api
 local loop = vim.loop
 local sync = vim.schedule_wrap
 
-local function cleanup_job(job_id)
-  if api.jobwait({job_id}, 0)[1] == -1 then
-    api.jobstop(job_id)
-    api.print("Job killed.")
+local function count(table)
+  local count = 0
+  for entry in pairs(table) do
+    count = count + 1
   end
+  return count
 end
 
 local function drop(str, char)
