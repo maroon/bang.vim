@@ -71,6 +71,9 @@ local function start_job(args)
   api.nvim_buf_set_keymap(buffer, 'n', '<CR>', ':b#<CR>', {
     silent = true
   })
+  api.nvim_buf_set_option(buffer, 'modifiable', false)
+  api.nvim_buf_set_option(buffer, 'buftype', 'nofile')
+  api.nvim_buf_set_option(buffer, 'bufhidden', 'wipe')
   api.nvim_buf_attach(buffer, false, {
     on_detach=function(b)
       cleanup_job(job_id)
