@@ -3,4 +3,4 @@ if exists('g:bang_loaded')
 endif
 let g:bang_loaded = 1
 
-command! -nargs=* Bang lua require'bang'.start_job('<args>')
+command! -nargs=* Bang lua require'bang'.start_job('<f-args>')
