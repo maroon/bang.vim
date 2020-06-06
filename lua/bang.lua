@@ -37,7 +37,7 @@ local function write(buffer, data)
   api.nvim_buf_set_option(buffer, 'modifiable', false)
 end
 
-local function cleanup_job(handle, pid, stdout, stderr)
+local function cleanup_job(handle, stdout, stderr)
   if not handle or not loop.is_active(handle) then
     return
   end
