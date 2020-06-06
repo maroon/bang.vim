@@ -53,7 +53,8 @@ local function cleanup_job(handle, pid, stdout, stderr)
   loop.kill(pid)
 end
 
-local function start_job(command)
+local function start_job(args)
+  local command, arguments = parse(args)
   local buffer = api.nvim_create_buf(false, true)
   local stdout = loop.new_pipe(false)
   local stderr = loop.new_pipe(false)
