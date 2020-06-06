@@ -38,15 +38,15 @@ local function write(buffer, data)
 end
 
 local function cleanup_job(handle, pid, stdout, stderr)
-  if handle and loop.is_active(handle) then
-    stdout:read_stop()
-    stdout:close()
-    stderr:read_stop()
-    stderr:close()
-    handle:close()
-    print('Job killed.')
+  if not handle or not loop.is_active(handle) then
+    return
   end
-  loop.kill(pid)
+  stdout:read_stop()
+  stdout:close()
+  stderr:read_stop()
+  stderr:close()
+  handle:close()
+  print('Job killed.')
 end
 
 local function start_job(args)
