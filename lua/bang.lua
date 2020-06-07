@@ -38,16 +38,21 @@ local function write(window, buffer, data)
   api.nvim_win_set_cursor(window, {offset, 0})
 end
 
-local function cleanup_job(handle, stdout, stderr)
-  if not handle or not loop.is_active(handle) then
-    return
+local function cleanup_handle(handle, notify)
+  if handle and not handle:is_closing() then
+    handle:close()
+    if notify then
+      print('Job killed.')
+    end
   end
+end
+
+local function cleanup_job(process, stdout, stderr, notify)
   stdout:read_stop()
-  stdout:close()
   stderr:read_stop()
-  stderr:close()
-  handle:close()
-  print('Job killed.')
+  cleanup_handle(stdout)
+  cleanup_handle(stderr)
+  cleanup_handle(process, notify)
 end
 
 local function start_job(args)
