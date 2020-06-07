@@ -29,11 +29,11 @@ local function write(buffer, data)
     return
   end
 
-  local lines = api.nvim_buf_line_count(buffer)
-  local offset = lines - 1
-  local value = table.concat(vim.split(data, '\n'))
+  local lines = api.nvim_buf_line_count(buffer) - 1
+  local value = vim.split(data, '\n')
+  local offset = count(value) + lines
   api.nvim_buf_set_option(buffer, 'modifiable', true)
-  api.nvim_buf_set_lines(buffer, offset, offset, false, {value})
+  api.nvim_buf_set_lines(buffer, lines, offset, false, value)
   api.nvim_buf_set_option(buffer, 'modifiable', false)
 end
 
