@@ -24,7 +24,7 @@ local function parse(args)
   return values[1], {unpack(values, 2)}
 end
 
-local function write(buffer, data)
+local function write(window, buffer, data)
   if data == nil or not api.nvim_buf_is_valid(buffer) then
     return
   end
