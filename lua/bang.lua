@@ -61,6 +61,7 @@ local function start_job(args)
     stdio = {nil, stdout, stderr}
   }, sync(function(code, signal)
     local message = '>> Press return to close the buffer <<'
+    write(window, buffer, '\n\n')
     write(window, buffer, message)
     cleanup_job(handle, stdout, stderr)
   end))
