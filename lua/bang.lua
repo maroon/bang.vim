@@ -52,6 +52,7 @@ end
 
 local function start_job(args)
   local command, arguments = parse(args)
+  local window = api.nvim_get_current_win()
   local buffer = api.nvim_create_buf(false, true)
   local stdout = loop.new_pipe(false)
   local stderr = loop.new_pipe(false)
@@ -60,7 +61,7 @@ local function start_job(args)
     stdio = {nil, stdout, stderr}
   }, sync(function(code, signal)
     local message = '>> Press return to close the buffer <<'
-    write(buffer, message)
+    write(window, buffer, message)
     cleanup_job(handle, stdout, stderr)
   end))
 
@@ -78,10 +79,10 @@ local function start_job(args)
   })
 
   loop.read_start(stdout, sync(function(err, data)
-    write(buffer, data)
+    write(window, buffer, data)
   end))
   loop.read_start(stderr, sync(function(err, data)
-    write(buffer, data)
+    write(window, buffer, data)
   end))
 end
 
