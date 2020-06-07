@@ -56,14 +56,14 @@ local function start_job(args)
   local buffer = api.nvim_create_buf(false, true)
   local stdout = loop.new_pipe(false)
   local stderr = loop.new_pipe(false)
-  local handle, _ = loop.spawn(command, {
+  local process, _ = loop.spawn(command, {
     args = arguments,
     stdio = {nil, stdout, stderr}
   }, sync(function(code, signal)
     local message = '>> Press return to close the buffer <<'
     write(window, buffer, '\n\n')
     write(window, buffer, message)
-    cleanup_job(handle, stdout, stderr)
+    cleanup_job(process, stdout, stderr)
   end))
 
   api.nvim_set_current_buf(buffer)
@@ -75,7 +75,7 @@ local function start_job(args)
   api.nvim_buf_set_option(buffer, 'bufhidden', 'wipe')
   api.nvim_buf_attach(buffer, false, {
     on_detach=function(buffer)
-      cleanup_job(handle, stdout, stderr)
+      cleanup_job(process, stdout, stderr, true)
     end
   })
 
