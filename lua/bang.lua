@@ -2,9 +2,9 @@ local api = vim.api
 local loop = vim.loop
 local sync = vim.schedule_wrap
 
-local function count(table)
+local function count(list)
   local count = 0
-  for entry in pairs(table) do
+  for entry in pairs(list) do
     count = count + 1
   end
   return count
