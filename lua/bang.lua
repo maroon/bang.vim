@@ -37,6 +37,17 @@ local function start_job(args)
   local command, arguments = args[1], {unpack(args, 2)}
   local window = api.nvim_get_current_win()
   local buffer = api.nvim_create_buf(false, true)
+  api.nvim_set_current_buf(buffer)
+  api.nvim_buf_set_keymap(buffer, 'n', '<CR>', ':b#<CR>', {
+    silent = true
+  })
+  api.nvim_buf_set_option(buffer, 'modifiable', false)
+  api.nvim_buf_set_option(buffer, 'buftype', 'nofile')
+  api.nvim_buf_set_option(buffer, 'bufhidden', 'wipe')
+
+  -- Kick off the process after the buffer has been created.
+  -- This prevents fast processes from finishing before the
+  -- buffer has a chance to display.
   local stdout = loop.new_pipe(false)
   local stderr = loop.new_pipe(false)
   local process, _ = loop.spawn(command, {
@@ -49,13 +60,8 @@ local function start_job(args)
     cleanup_job(process, stdout, stderr)
   end))
 
-  api.nvim_set_current_buf(buffer)
-  api.nvim_buf_set_keymap(buffer, 'n', '<CR>', ':b#<CR>', {
-    silent = true
-  })
-  api.nvim_buf_set_option(buffer, 'modifiable', false)
-  api.nvim_buf_set_option(buffer, 'buftype', 'nofile')
-  api.nvim_buf_set_option(buffer, 'bufhidden', 'wipe')
+  -- Attach buffer after the process variables are set. This
+  -- ensures they can be accessed later.
   api.nvim_buf_attach(buffer, false, {
     on_detach=function(buffer)
       cleanup_job(process, stdout, stderr, true)
