@@ -2,19 +2,6 @@ local api = vim.api
 local loop = vim.loop
 local sync = vim.schedule_wrap
 
-local function count(list)
-  local count = 0
-  for entry in pairs(list) do
-    count = count + 1
-  end
-  return count
-end
-
-local function drop(str, char)
-  local replacement, _ = string.gsub(str, char, '')
-  return replacement
-end
-
 local function write(window, buffer, data)
   if data == nil or not api.nvim_buf_is_valid(buffer) then
     return
