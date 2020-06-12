@@ -47,7 +47,7 @@ local function cleanup_job(process, stdout, stderr, notify)
 end
 
 local function start_job(args)
-  local command, arguments = parse(args)
+  local command, arguments = args[1], {unpack(args, 2)}
   local window = api.nvim_get_current_win()
   local buffer = api.nvim_create_buf(false, true)
   local stdout = loop.new_pipe(false)
