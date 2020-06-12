@@ -22,7 +22,7 @@ local function write(window, buffer, data)
 
   local lines = api.nvim_buf_line_count(buffer) - 1
   local value = vim.split(data, '\n')
-  local offset = count(value) + lines
+  local offset = #value + lines
   api.nvim_buf_set_option(buffer, 'modifiable', true)
   api.nvim_buf_set_lines(buffer, lines, offset, false, value)
   api.nvim_buf_set_option(buffer, 'modifiable', false)
